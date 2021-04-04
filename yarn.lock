@@ -575,6 +575,21 @@
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^2.1.2"
 
+"@vueuse/core@^4.6.4":
+  version "4.6.4"
+  resolved "https://registry.npm.taobao.org/@vueuse/core/download/@vueuse/core-4.6.4.tgz#4344f1a1b157b541070e1c8aa17ba26dd469ed34"
+  integrity sha1-Q0TxobFXtUEHDhyKoXuibdRp7TQ=
+  dependencies:
+    "@vueuse/shared" "4.6.4"
+    vue-demi latest
+
+"@vueuse/shared@4.6.4":
+  version "4.6.4"
+  resolved "https://registry.npm.taobao.org/@vueuse/shared/download/@vueuse/shared-4.6.4.tgz#7579f3e6216213032005e401060afbe730a143e3"
+  integrity sha1-dXnz5iFiEwMgBeQBBgr75zChQ+M=
+  dependencies:
+    vue-demi latest
+
 acorn-jsx@^5.2.0, acorn-jsx@^5.3.1:
   version "5.3.1"
   resolved "https://registry.npm.taobao.org/acorn-jsx/download/acorn-jsx-5.3.1.tgz?cache=0&sync_timestamp=1599499102891&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Facorn-jsx%2Fdownload%2Facorn-jsx-5.3.1.tgz#fc8661e11b7ac1539c47dbfea2e72b3af34d267b"
@@ -900,6 +915,11 @@ deep-is@^0.1.3:
   version "0.1.3"
   resolved "https://registry.npm.taobao.org/deep-is/download/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
+
+default-passive-events@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/default-passive-events/download/default-passive-events-2.0.0.tgz#79b1aa67becbaab38b718469b5480fef92eda649"
+  integrity sha1-ebGqZ77LqrOLcYRptUgP75Ltpkk=
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -1843,6 +1863,11 @@ require-from-string@^2.0.2:
   resolved "https://registry.npm.taobao.org/require-from-string/download/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
   integrity sha1-iaf92TgmEmcxjq/hT5wy5ZjDaQk=
 
+reset.css@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npm.taobao.org/reset.css/download/reset.css-2.0.2.tgz#9c01309c820b72e8f219ebcc8e1411949604f7d7"
+  integrity sha1-nAEwnIILcujyGevMjhQRlJYE99c=
+
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/resolve-from/download/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
@@ -2176,6 +2201,11 @@ vscode-web-custom-data@^0.3.2:
   version "0.3.3"
   resolved "https://registry.npm.taobao.org/vscode-web-custom-data/download/vscode-web-custom-data-0.3.3.tgz#9e1f2388c718d6f190038a19d144834a436b876f"
   integrity sha1-nh8jiMcY1vGQA4oZ0USDSkNrh28=
+
+vue-demi@latest:
+  version "0.7.4"
+  resolved "https://registry.npm.taobao.org/vue-demi/download/vue-demi-0.7.4.tgz#4c6be525788e1f6b3fd5d4f5f9f2148cf6645979"
+  integrity sha1-TGvlJXiOH2s/1dT1+fIUjPZkWXk=
 
 vue-eslint-parser@^7.6.0:
   version "7.6.0"
