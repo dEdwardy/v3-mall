@@ -4,11 +4,12 @@
       <div class="title">
         我的旅行
       </div>
-      <van-tabs 
+      <van-tabs
         v-model:active="travelActive"
+        sticky
+        animated 
         swipeable
         color="#13C2C2"
-        type="card"
       >
         <van-tab title="最近预定">
           <div class="list">
@@ -18,7 +19,10 @@
               class="item"
             >
               <div class="like-icon">
-                <van-icon class="" name="like-o" />
+                <van-icon
+                  class=""
+                  name="like-o"
+                />
               </div>
               <div class="top txt-center">
                 {{ item.date }} , {{ item.roomNum+' 间' }} - {{ item.personNum +' 人' }}
@@ -34,11 +38,20 @@
                     <div class="price"> {{ item.unit +' '+ item.price }}</div>
                   </div>
                   <div class="flex">
-                    <div class="location"> <van-icon name="location-o" />{{ item.location }}</div>
+                    <div class="location">
+                      <van-icon name="location-o" />{{ item.location }}
+                    </div>
                     <div class="distance"> {{ item.distance }}</div>
                   </div>
-                  <div class="flex" style="justify-content:flex-start">
-                    <van-rate v-model="item.rate" :count="5" readonly />
+                  <div
+                    class="flex"
+                    style="justify-content:flex-start"
+                  >
+                    <van-rate
+                      v-model="item.rate"
+                      :count="5"
+                      readonly
+                    />
                     <div style="margin-left:20px;color:#aaa;font-size:14px">{{ item.commentsNum }} 条评论</div>
                   </div>
                 </div>
@@ -81,7 +94,7 @@
 
 <script>
 import bg from '../assets/list-bg.png'
-import { ref,watch} from 'vue';
+import { ref, watch } from 'vue';
 export default {
   setup () {
     const active = ref(1)
@@ -89,7 +102,7 @@ export default {
     const list = ref([])
     const getList = () => {
       console.error('getList---------------')
-      const random = Math.ceil(Math.random()*5)
+      const random = Math.ceil(Math.random() * 5)
       list.value = new Array(random).fill({
         date: '2021/3/1 - 2021/3-21',
         roomNum: 1,
@@ -106,12 +119,12 @@ export default {
       return random;
       // list.value = []
     };
-    watch([travelActive],() => {
+    watch([travelActive], () => {
       console.error(1111111111)
       let random = getList();
-      console.error(travelActive.value,random)
-    },{
-      immediate:true
+      console.error(travelActive.value, random)
+    }, {
+      immediate: true
     })
     return {
       active,
@@ -126,6 +139,9 @@ export default {
 
 <style lang="scss" scoped>
 .travel {
+  ::v-deep(.van-tab--active) {
+    color:#13C2C2;
+  }
   .txt-center {
     text-align: center;
   }
@@ -135,7 +151,7 @@ export default {
     align-items: center;
   }
   .content {
-    height: calc(100vh - 50px);
+    // height: calc(100vh - 50px);M
   }
   .title {
     padding: 16px;
@@ -145,24 +161,24 @@ export default {
     font-weight: bold;
   }
   .list {
-    height:calc(100vh - 100px - 44px );
-    overflow-y:scroll;
+    // height:calc(100vh - 100px);
+    overflow-y: scroll;
     padding: 0 16px;
     .item {
-      position:relative;
+      position: relative;
       margin: 16px 0;
-      .like-icon{
+      .like-icon {
         border-radius: 50%;
-        width:24px;
-        height:24px;
+        width: 24px;
+        height: 24px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color:#fff;
-        color:red;
-        position:absolute;
-        right:18px;
-        top:54px ;
+        background-color: #fff;
+        color: red;
+        position: absolute;
+        right: 18px;
+        top: 54px;
       }
       .top {
         padding: 8px 12px;
@@ -178,26 +194,27 @@ export default {
       }
       .bottom {
         // box-shadow: 0px 2px 19px 0px rgba(0, 0, 0, 0.13);
-        & > div{
+        & > div {
           padding: 6px 0;
         }
-        & > div:last-child{
+        & > div:last-child {
           padding: 12px 0;
         }
-        .name{
+        .name {
           font-size: 18px;
         }
-        .price{
+        .price {
           font-size: 16px;
         }
-        .location,.distance{
+        .location,
+        .distance {
           display: flex;
           justify-content: flex-start;
           align-items: center;
           font-size: 14px;
-          color:#aaa;
+          color: #aaa;
         }
-        padding:16px 12px 16px 12px;
+        padding: 16px 12px 16px 12px;
       }
     }
   }
