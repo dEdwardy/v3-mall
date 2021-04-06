@@ -4,6 +4,7 @@ import store from './store'
 import VantUI from 'vant';
 import 'vant/lib/index.css';
 import 'reset.css'
+import './common/index.scss'
 import 'default-passive-events'
 import App from './App.vue'
 

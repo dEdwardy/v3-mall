@@ -18,6 +18,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'search',
     component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
   },{
+    path: '/hotel-info/:id?',
+    name: 'hotel-info',
+    component: () => import(/* webpackChunkName: "hotel-info" */ '../views/HotelInfo.vue')
+  },{
+    path: '/hotel-detail/:id?',
+    name: 'hotel-detail',
+    component: () => import(/* webpackChunkName: "hotel-detail" */ '../views/HotelDetail.vue')
+  },{
     path: '/demo',
     name: 'demo',
     component: () => import(/* webpackChunkName: "demo" */ '../views/Demo.vue')

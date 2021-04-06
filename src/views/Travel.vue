@@ -7,7 +7,7 @@
       <van-tabs
         v-model:active="travelActive"
         sticky
-        animated 
+        animated
         swipeable
         color="#13C2C2"
       >
@@ -92,37 +92,40 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import bg from '../assets/list-bg.png'
 import { ref, watch } from 'vue';
+import useMock, { IOptions } from '../hooks/use-mock'
 export default {
   setup () {
+    const options:IOptions= {
+      min:5,
+      max:10
+    }
+    const { list, getList } = useMock(options);
     const active = ref(1)
     const travelActive = ref(0)
-    const list = ref([])
-    const getList = () => {
-      console.error('getList---------------')
-      const random = Math.ceil(Math.random() * 5)
-      list.value = new Array(random).fill({
-        date: '2021/3/1 - 2021/3-21',
-        roomNum: 1,
-        personNum: 2,
-        bg: './assets/list-bg.png',
-        name: '吉野家民宿',
-        location: '巴塞洛纳,西班牙',
-        distance: '2km',
-        rate: 4,
-        commentsNum: 80,
-        price: 1080,
-        unit: '￥'
-      })
-      return random;
-      // list.value = []
-    };
+    // const list = ref([])
+    // const getList = () => {
+    //   console.error('getList---------------')
+    //   const random = Math.ceil(Math.random() * 5)
+    //   list.value = new Array(random).fill({
+    //     date: '2021/3/1 - 2021/3-21',
+    //     roomNum: 1,
+    //     personNum: 2,
+    //     bg: './assets/list-bg.png',
+    //     name: '吉野家民宿',
+    //     location: '巴塞洛纳,西班牙',
+    //     distance: '2km',
+    //     rate: 4,
+    //     commentsNum: 80,
+    //     price: 1080,
+    //     unit: '￥'
+    //   })
+    //   return random;
+    // };
     watch([travelActive], () => {
-      console.error(1111111111)
-      let random = getList();
-      console.error(travelActive.value, random)
+      getList();
     }, {
       immediate: true
     })
@@ -140,7 +143,7 @@ export default {
 <style lang="scss" scoped>
 .travel {
   ::v-deep(.van-tab--active) {
-    color:#13C2C2;
+    color: #13c2c2;
   }
   .txt-center {
     text-align: center;
@@ -149,9 +152,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  .content {
-    // height: calc(100vh - 50px);M
   }
   .title {
     padding: 16px;
