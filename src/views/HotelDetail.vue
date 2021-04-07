@@ -36,51 +36,154 @@
         </div>
       </div>
       <van-divider />
+      <!-- 介绍 -->
       <div class="intro">
         <p class="title">介绍</p>
-        <p class="txt"> {{item.desc}}</p>
+        <p :class="more ? 'txt ' :'txt ellipsis'"> {{ item.desc }}</p>
+        <div class="flex align-center justify-end">
+          <span
+            v-show="!more"
+            class="more"
+            @click="handleClickMore"
+          >查看更多</span>
+        </div>
+      </div>
+      <!-- 评分 -->
+      <div class="rates">
+        <div class="flex align-center">
+          <div class="total-rate">
+            {{ item.rate.total }}
+          </div>
+          <div>
+            <div>
+              综合评价
+            </div>
+            <div style="margin-top:4px">
+              <van-rate
+                v-model="item.rate.total"
+                color="#ffd21e"
+                void-icon="star"
+                void-color="#eee"
+                :count="5"
+                allow-half
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="rate-item">
+          <div>
+            房间
+          </div>
+          <div>
+            <van-rate
+              v-model="item.rate.room"
+              color="#ffd21e"
+              void-icon="star"
+              void-color="#eee"
+              :count="5"
+              allow-half
+              readonly
+            />
+          </div>
+        </div>
+        <div class="rate-item">
+          <div>
+            服务
+          </div>
+          <div>
+            <van-rate
+              v-model="item.rate.service"
+              color="#ffd21e"
+              void-icon="star"
+              void-color="#eee"
+              :count="5"
+              allow-half
+              readonly
+            />
+          </div>
+        </div>
+        <div class="rate-item">
+          <div>
+            位置
+          </div>
+          <div>
+            <van-rate
+              v-model="item.rate.location"
+              color="#ffd21e"
+              void-icon="star"
+              void-color="#eee"
+              :count="5"
+              allow-half
+              readonly
+            />
+          </div>
+        </div>
+        <div class="rate-item">
+          <div>
+            价格
+          </div>
+          <div>
+            <van-rate
+              v-model="item.rate.price"
+              color="#ffd21e"
+              void-icon="star"
+              void-color="#eee"
+              :count="5"
+              allow-half
+              readonly
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, toRefs, watch } from 'vue'
 import instance from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 import { useRouter } from 'vue-router'
 
 export default {
   setup () {
-    let item = reactive({
-      poster: '',
-      name: '',
-      location: '',
-      distance: '',
-      price: '',
-      desc: '',
-      rate: {
-        total: '',
-        room: '',
-        service: '',
+    const more = ref(false)
+    const handleClickMore = () => more.value = true;
+    const state = reactive({
+      item: {
+        poster: '',
+        name: '',
         location: '',
-        price: ''
-      },
-      pics: [],
-      comments: []
+        distance: '',
+        price: '',
+        desc: '',
+        rate: {
+          total: '',
+          room: '',
+          service: '',
+          location: '',
+          price: ''
+        },
+        pics: [],
+        comments: []
+      }
     })
     const router = useRouter()
     const like = ref(false)
     const handleClickBack = () => router.back();
     const handleClickLike = () => like.value = !like.value;
     const { data, finished } = useAxios('/detail', { method: 'GET' }, instance)
-    item = data;
+    watch(finished, () => {
+      state.item = data.value
+    })
     return {
       like,
-      finished,
+      more,
+      handleClickMore,
       handleClickBack,
       handleClickLike,
-      item
+      ...toRefs(state)
     }
   }
 }
@@ -119,11 +222,39 @@ export default {
         font-size: 14px;
       }
       .txt {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
+        line-height: 24px;
+        margin-top: 12px;
+        transition: all 0.3 linear;
+        &.ellipsis {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
+      .more {
+        color: #13c2c2;
+        padding: 4px 12px;
+      }
+    }
+    .rates {
+      padding: 0 16px;
+      .total-rate {
+        font-size: 28px;
+        line-height: 34px;
+        height: 34px;
+        color: #13c2c2;
+        margin:0 8px;
+      }
+      .rate-item{
+        display: flex;
+        & .div:first-child{
+          min-width:40px;
+        }
+         & .div:last-child{
+           flex:1;
+        }
       }
     }
   }

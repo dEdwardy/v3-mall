@@ -1,9 +1,15 @@
-.flex{
+.flex {
   display: flex;
-  &.justify-between{
-  justify-content: space-between;
+
+  &.justify-between {
+    justify-content: space-between;
   }
-  &.align-end{
+
+  &.align-end {
     align-items: flex-end;
-    }
+  }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
 }
