@@ -11,10 +11,11 @@
             <van-row>
               <van-col
                 :span="24"
-                @click="$router.push({ path:'search'})"
+                @click.stop="toSearch"
               >
                 <van-field
                   v-model="searchData.location"
+                  readonly
                   left-icon="search"
                   class="searh-input "
                   name="location"
@@ -61,6 +62,7 @@
                   block
                   type="success"
                   native-type="submit"
+                  @click="toSearch"
                 >
                   搜索酒店
                 </van-button>
@@ -109,6 +111,7 @@
 
 <script>
 import { ref, reactive, defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'Home',
   setup () {
@@ -117,6 +120,12 @@ export default defineComponent({
     const show = () => {
       console.log('click')
       showCalendar.value = true
+    }
+    const router = useRouter()
+    const toSearch = () => {
+      router.push({
+        name:'search'
+      })
     }
     const onConfirm = (dates) => {
       console.log(dates)
@@ -139,7 +148,8 @@ export default defineComponent({
       searchData,
       showCalendar,
       onConfirm,
-      show
+      show,
+      toSearch
     }
   }
 

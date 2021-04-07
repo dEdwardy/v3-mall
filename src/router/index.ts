@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-
+import '../common/nprogress.css'
+import { useNProgress } from '@vueuse/integrations'
+const { progress } = useNProgress(null,{
+  showSpinner:true
+})
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -31,10 +35,23 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "demo" */ '../views/Demo.vue')
   }
 ]
-
+const start = () => {
+  progress.value = 0
+}
+const done = () => {
+  progress.value = 1.0
+}
 const router = createRouter({
   history: createWebHistory('/'),
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  console.error('start')
+  start()
+  next()
+})
+router.afterEach(() => {
+  console.error('end')
+  done()
+})
 export default router

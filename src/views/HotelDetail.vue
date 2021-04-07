@@ -38,7 +38,7 @@
       <van-divider />
       <!-- 介绍 -->
       <div class="intro">
-        <p class="title">介绍</p>
+        <p class="title" style="padding:0">介绍</p>
         <p :class="more ? 'txt ' :'txt ellipsis'"> {{ item.desc }}</p>
         <div class="flex align-center justify-end">
           <span
@@ -64,76 +64,57 @@
                 color="#ffd21e"
                 void-icon="star"
                 void-color="#eee"
-                :count="5"
+                :count="10"
                 allow-half
                 readonly
               />
             </div>
           </div>
         </div>
-        <div class="rate-item">
-          <div>
+        <div class="rate-item" style="margin-top:8px">
+          <div class="label">
             房间
           </div>
-          <div>
-            <van-rate
-              v-model="item.rate.room"
-              color="#ffd21e"
-              void-icon="star"
-              void-color="#eee"
-              :count="5"
-              allow-half
-              readonly
-            />
+          <div class="value">
+            <custom-rate :value="item.rate.room"></custom-rate>
           </div>
         </div>
         <div class="rate-item">
-          <div>
+          <div class="label">
             服务
           </div>
-          <div>
-            <van-rate
-              v-model="item.rate.service"
-              color="#ffd21e"
-              void-icon="star"
-              void-color="#eee"
-              :count="5"
-              allow-half
-              readonly
-            />
+          <div class="value">
+            <custom-rate :value="item.rate.service"></custom-rate>
           </div>
         </div>
         <div class="rate-item">
-          <div>
+          <div class="label">
             位置
           </div>
-          <div>
-            <van-rate
-              v-model="item.rate.location"
-              color="#ffd21e"
-              void-icon="star"
-              void-color="#eee"
-              :count="5"
-              allow-half
-              readonly
-            />
+          <div class="value">
+            <custom-rate :value="item.rate.location"></custom-rate>
           </div>
         </div>
         <div class="rate-item">
-          <div>
+          <div class="label">
             价格
           </div>
-          <div>
-            <van-rate
-              v-model="item.rate.price"
-              color="#ffd21e"
-              void-icon="star"
-              void-color="#eee"
-              :count="5"
-              allow-half
-              readonly
-            />
+          <div class="value">
+            <custom-rate :value="item.rate.price"></custom-rate>
           </div>
+        </div>
+      </div>
+      <!-- 照片 -->
+      <div class="pics">
+        <div class="title">照片</div>
+        <div class="wrapper flex align-center">
+          <img v-for="(item,index) of item.pics" :key="index" class="pic" :src="item" alt="" @click.stop="() => handleClickImg(index)">
+        </div>
+      </div>
+      <!-- 评论 -->
+      <div class="commets">
+        <div class="title">评论({{ item.comments.length }})</div>
+        <div class="wrapper">
         </div>
       </div>
     </div>
@@ -141,12 +122,17 @@
 </template>
 
 <script>
+import CustomRate from '../components/custom-rate.vue'
 import { ref, reactive, toRefs, watch } from 'vue'
 import instance from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 import { useRouter } from 'vue-router'
+import { ImagePreview } from 'vant';
 
 export default {
+  components:{
+    CustomRate
+  },
   setup () {
     const more = ref(false)
     const handleClickMore = () => more.value = true;
@@ -173,6 +159,14 @@ export default {
     const like = ref(false)
     const handleClickBack = () => router.back();
     const handleClickLike = () => like.value = !like.value;
+    const handleClickImg = (idx) => {
+      ImagePreview({
+        images:state.item.pics,
+        startPosition:idx,
+        showIndex:true,
+        loop:false
+      })
+    }
     const { data, finished } = useAxios('/detail', { method: 'GET' }, instance)
     watch(finished, () => {
       state.item = data.value
@@ -183,6 +177,7 @@ export default {
       handleClickMore,
       handleClickBack,
       handleClickLike,
+      handleClickImg,
       ...toRefs(state)
     }
   }
@@ -191,6 +186,15 @@ export default {
 
 <style lang="scss" scoped>
 .hotel-detail {
+  .title{
+    font-size: 14px;
+    margin:12px 0;
+    padding:0 16px;
+    color:#aaa;
+  }
+  ::v-deep(.van-slider__button-wrapper){
+    display: none;
+  }
   ::v-deep(.van-icon-arrow-left) {
     // color:#fff;
   }
@@ -201,15 +205,15 @@ export default {
     color: red;
   }
   .details {
-    padding: 0 16px;
     .base-info {
-      padding: 12px 0;
+      padding: 12px 16px;
       .name {
         font-size: 18px;
         font-weight: bold;
       }
     }
     .other {
+    padding: 0 16px;
       color: #aaa;
       font-size: 14px;
       .distance {
@@ -217,6 +221,7 @@ export default {
       }
     }
     .intro {
+    padding: 0 16px;
       .title {
         color: #aaa;
         font-size: 14px;
@@ -239,23 +244,46 @@ export default {
       }
     }
     .rates {
-      padding: 0 16px;
+      border-radius:8px;
+      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+      margin:16px 16px 24px;
+      padding: 16px;
       .total-rate {
-        font-size: 28px;
+        font-size: 38px;
         line-height: 34px;
         height: 34px;
         color: #13c2c2;
-        margin:0 8px;
+        margin: 0 16px 0 4px;
       }
-      .rate-item{
+      .rate-item {
         display: flex;
-        & .div:first-child{
-          min-width:40px;
+        padding:4px 8px;
+        align-items: center;
+        &:first-child{
+          margin-top:12px !important;
         }
-         & .div:last-child{
-           flex:1;
+        .label {
+          width: 40px;
+          font-size: 14px;
+        }
+        .value {
+          padding-right: 20px;
+          flex: 1;
         }
       }
+    }
+    .pics{
+      .wrapper{
+        overflow: scroll;
+      }
+      .pic{
+        padding:12px;
+        width:25%;
+        border-radius: 16px;
+      }
+    }
+    .comments{
+
     }
   }
 }

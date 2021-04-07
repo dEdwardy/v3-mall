@@ -4,11 +4,11 @@ export interface IOptions {
   max?: number,
   item?: any
 }
-interface IResult {
-  list: Ref<Object>,
-  getList:() => number;
-}
-export default function (options: IOptions = {}):IResult {
+// interface IResult {
+//   list: Ref<Object>,
+//   getList:() => number;
+// }
+export default function (options: IOptions = {}) {
   if (options.max && options.min && options.min > options.max) throw new Error('最小值不能大于最大值')
   const list = ref([])
   const getList = () => {
