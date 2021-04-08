@@ -124,7 +124,7 @@ export default defineComponent({
     const router = useRouter()
     const toSearch = () => {
       router.push({
-        name:'search'
+        path:'/search'
       })
     }
     const onConfirm = (dates) => {

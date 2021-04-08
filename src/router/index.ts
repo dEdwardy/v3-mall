@@ -30,6 +30,10 @@ const routes: Array<RouteRecordRaw> = [
     name: 'hotel-detail',
     component: () => import(/* webpackChunkName: "hotel-detail" */ '../views/HotelDetail.vue')
   },{
+    path: '/lead',
+    name: 'lead',
+    component: () => import(/* webpackChunkName: "lead" */ '../views/Lead.vue')
+  },{
     path: '/demo',
     name: 'demo',
     component: () => import(/* webpackChunkName: "demo" */ '../views/Demo.vue')
@@ -46,12 +50,13 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  console.error('start')
+  // console.error('start')
   start()
   next()
 })
 router.afterEach(() => {
-  console.error('end')
+  // console.error('end')
   done()
 })
+router.onError(err => alert(err))
 export default router

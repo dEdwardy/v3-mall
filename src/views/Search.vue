@@ -31,38 +31,40 @@
         :key="index"
         class="item"
       >
-        <div class="like-icon">
-          <van-icon
-            class=""
-            name="like-o"
-          />
-        </div>
-        <div class="main" @click="() => handleViewDetail(item)">
-          <div
-            class="middle"
-            :style="{background:`url(${bg})`}"
-          ></div>
-          <div class="info bottom">
-            <div class="flex justify-between">
-              <div class="name"> {{ item.name }}</div>
-              <div class="price"> {{ item.unit +' '+ item.price }}</div>
-            </div>
-            <div class="flex">
-              <div class="location">
-                <van-icon name="location-o" />{{ item.location }}
-              </div>
-              <div class="distance"> {{ item.distance }}</div>
-            </div>
+        <div>
+          <div class="like-icon">
+            <van-icon
+              class=""
+              name="like-o"
+            />
+          </div>
+          <div class="main" @click="() => handleViewDetail(item)">
             <div
-              class="flex"
-              style="justify-content:flex-start"
-            >
-              <van-rate
-                v-model="item.rate"
-                :count="5"
-                readonly
-              />
-              <div style="margin-left:20px;color:#aaa;font-size:14px">{{ item.commentsNum }} 条评论</div>
+              class="middle"
+              :style="{background:`url(${bg})`}"
+            ></div>
+            <div class="info bottom">
+              <div class="flex justify-between">
+                <div class="name"> {{ item.name }}</div>
+                <div class="price"> {{ item.unit +' '+ item.price }}</div>
+              </div>
+              <div class="flex">
+                <div class="location">
+                  <van-icon name="location-o" />{{ item.location }}
+                </div>
+                <div class="distance"> {{ item.distance }}</div>
+              </div>
+              <div
+                class="flex"
+                style="justify-content:flex-start"
+              >
+                <van-rate
+                  v-model="item.rate"
+                  :count="5"
+                  readonly
+                />
+                <div style="margin-left:20px;color:#aaa;font-size:14px">{{ item.commentsNum }} 条评论</div>
+              </div>
             </div>
           </div>
         </div>
@@ -73,12 +75,15 @@
 
 <script>
 import bg from '../assets/list-bg.png'
-import { ref, onMounted } from 'vue'
+import instance from '../utils/service'
+import { useAxios } from '@vueuse/integrations'
+import { ref,watch } from 'vue'
 import { useRouter } from 'vue-router'
-import useMock from '../hooks/use-mock'
 export default {
   setup () {
-    const { list, getList } = useMock()
+    const list = ref([])
+    const { data, finished } = useAxios('/list', { method: 'GET' }, instance)
+    watch(finished, () => list.value = data.value)
     const value = ref('')
     const search = ref(null)
     const router = useRouter()
@@ -98,14 +103,13 @@ export default {
         }
       })
     }
-    onMounted(() => getList())
     return {
       value,
       search,
       handleClose,
       onSearch,
       list,
-      getList,
+      // getList,
       handleViewDetail,
       bg
     }
@@ -138,8 +142,8 @@ export default {
         background-color: #fff;
         color: red;
         position: absolute;
-        right: 18px;
-        top: 54px;
+        right: 12px;
+        top: 10px;
       }
       .top {
         padding: 8px 12px;

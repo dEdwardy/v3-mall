@@ -17,6 +17,7 @@
               v-for="(item,index) of list"
               :key="index"
               class="item"
+              @click="toDetail"
             >
               <div class="like-icon">
                 <van-icon
@@ -94,47 +95,27 @@
 
 <script lang="ts">
 import bg from '../assets/list-bg.png'
+import instance from '../utils/service'
+import { useAxios } from '@vueuse/integrations'
 import { ref, watch } from 'vue';
-import useMock, { IOptions } from '../hooks/use-mock'
+import { useRouter } from 'vue-router';
 export default {
   setup () {
-    const options:IOptions= {
-      min:5,
-      max:10
-    }
-    const { list, getList } = useMock(options);
+    const list = ref([])
     const active = ref(1)
     const travelActive = ref(0)
-    // const list = ref([])
-    // const getList = () => {
-    //   console.error('getList---------------')
-    //   const random = Math.ceil(Math.random() * 5)
-    //   list.value = new Array(random).fill({
-    //     date: '2021/3/1 - 2021/3-21',
-    //     roomNum: 1,
-    //     personNum: 2,
-    //     bg: './assets/list-bg.png',
-    //     name: '吉野家民宿',
-    //     location: '巴塞洛纳,西班牙',
-    //     distance: '2km',
-    //     rate: 4,
-    //     commentsNum: 80,
-    //     price: 1080,
-    //     unit: '￥'
-    //   })
-    //   return random;
-    // };
-    watch([travelActive], () => {
-      getList();
-    }, {
-      immediate: true
+    const { data, finished } = useAxios('/list', { method: 'GET' }, instance)
+    const router = useRouter()
+    const toDetail = () => router.push({ name:'hotel-detail',params:{ id:1 }})
+    watch([finished,travelActive],() => {
+      list.value = data.value
     })
     return {
       active,
       bg,
       travelActive,
       list,
-      getList
+      toDetail
     }
   }
 }

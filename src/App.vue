@@ -3,10 +3,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onErrorCaptured } from 'vue'
 
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  setup() {
+    onErrorCaptured((err) => alert(err))
+  }
 })
 </script>
 
@@ -17,7 +20,7 @@ export default defineComponent({
 }
 </style>
 <style lang="scss">
-.van-cell{
-  padding:10px 8px;
+.van-cell {
+  padding: 10px 8px;
 }
 </style>

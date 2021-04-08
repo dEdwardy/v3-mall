@@ -7,8 +7,16 @@
       @click-right="handleClickLike"
     >
       <template #right>
-        <van-icon v-show="!like" class="like-icon" name="like-o" />
-        <van-icon v-show="like" class="like-icon" name="like" />
+        <van-icon
+          v-show="!like"
+          class="like-icon"
+          name="like-o"
+        />
+        <van-icon
+          v-show="like"
+          class="like-icon"
+          name="like"
+        />
       </template>
     </van-nav-bar>
     <div class="list">
@@ -17,7 +25,10 @@
         :key="index"
         class="item"
       >
-        <div class="main" @click="() => handleViewDetail(item)">
+        <div
+          class="main"
+          @click="() => handleViewDetail(item)"
+        >
           <div
             class="middle"
             :style="{background:`url(${bg})`}"
@@ -29,13 +40,19 @@
               <span style="color:#aaa;font-size:14px">{{ item.liveNum }}人</span>
             </div>
             <div class="flex justify-between">
-              <div class="price"> 
+              <div class="price">
                 <span>{{ item.price }}</span>
                 <span style="margin:0 4px;color:#aaa;font-size:14px">/</span>
                 <span style="color:#aaa;font-size:14px">每晚</span>
               </div>
               <div>
-                <van-button style="height:32px;line-height:32px" round type="success">立即预定</van-button>
+                <van-button
+                  style="height:32px;line-height:32px"
+                  round
+                  type="success"
+                >
+                  立即预定
+                </van-button>
               </div>
             </div>
           </div>
@@ -47,50 +64,63 @@
 
 <script>
 import bg from '../assets/bg.png'
-import { onMounted,ref } from 'vue'
+import { watch, ref, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import useMock from '../hooks/use-mock'
+import instance from '../utils/service'
+import { useAxios } from '@vueuse/integrations'
 export default {
-  setup(){
+  setup () {
     const like = ref(false)
     const handleClickLike = () => {
       like.value = !like.value
     }
     const router = useRouter()
-    const { info,getInfo } = useMock()
+    const state = reactive({
+      info: {
+        poster: '',
+        name: '',
+        roomsInfo: {
+          name: '',
+          price: '',
+          numLeft: '',
+          liveNum: ''
+        }
+      }
+    });
+    const { data, finished } = useAxios('/info', { method: 'GET' }, instance)
+    watch(finished, () => {
+      state.info = data.value
+      console.log(data.value)
+    })
     const onClickBack = () => router.back()
     const handleViewDetail = item => {
       console.log(item)
       router.push({
-        name:'hotel-detail',
-        params:{
-          id:2
+        name: 'hotel-detail',
+        params: {
+          id: 2
         }
       })
     }
-    onMounted(() => {
-      getInfo()
-    })
     return {
       onClickBack,
-      info,
-      getInfo,
       like,
       handleClickLike,
       handleViewDetail,
-      bg
+      bg,
+      ...toRefs(state)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.hotel-info{
-  .like-icon{
-    color:red;
+.hotel-info {
+  .like-icon {
+    color: red;
   }
   // room list style
- .list {
+  .list {
     // height:calc(100vh - 100px);
     overflow-y: scroll;
     padding: 0 16px;
