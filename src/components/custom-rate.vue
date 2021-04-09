@@ -1,5 +1,6 @@
 <template>
   <div class="custom-rate-wrapper">
+    <!-- ts-ignore -->
     <div class="custom-rate-inner" :style="{ width:Number(value/total*100)+'%' }"></div>
   </div>
 </template>
@@ -9,11 +10,11 @@ export default {
   name: 'CustomRate',
   props: {
     value: {
-      type: [Number,String],
+      type: Number,
       default: 5
     },
     total: {
-      type: [Number,String],
+      type: Number,
       default: 10
     }
   },

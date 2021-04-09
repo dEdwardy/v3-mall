@@ -1,14 +1,21 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import '../common/nprogress.css'
 import { useNProgress } from '@vueuse/integrations'
-const { progress } = useNProgress(null,{
-  showSpinner:true
-})
+const { progress } = useNProgress()
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    name: 'lead',
+    component: () => import(/* webpackChunkName: "lead" */ '../views/Lead.vue')
+  },
+  {
+    path: '/home',
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+  },{
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   },{
     path: '/mine',
     name: 'mine',
@@ -30,10 +37,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'hotel-detail',
     component: () => import(/* webpackChunkName: "hotel-detail" */ '../views/HotelDetail.vue')
   },{
-    path: '/lead',
-    name: 'lead',
-    component: () => import(/* webpackChunkName: "lead" */ '../views/Lead.vue')
-  },{
     path: '/demo',
     name: 'demo',
     component: () => import(/* webpackChunkName: "demo" */ '../views/Demo.vue')
@@ -46,7 +49,7 @@ const done = () => {
   progress.value = 1.0
 }
 const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHistory('/v3-mall'),
   routes
 })
 router.beforeEach((to, from, next) => {

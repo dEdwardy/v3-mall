@@ -10,15 +10,22 @@
       </div>
     </div>
     <div class="bottom">
-      <van-button round block style="background:#13c2c2;color:#fff">开始</van-button>
-      <p class="info">已有帐号了？<span>登录</span></p>
+      <van-button round block style="background:#13c2c2;color:#fff" @click="go">开始</van-button>
+      <!-- <p class="info">已有帐号了？<span>登录</span></p> -->
     </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 export default {
-
+  setup(){
+    const router = useRouter()
+    const go = () => router.push({ name:'login' })
+    return {
+      go
+    }
+  }
 }
 </script>
 
@@ -61,7 +68,7 @@ export default {
   }
   .bottom{
     position: absolute;
-    bottom:0;
+    bottom:20px;
     left:0;
     right:0;
     padding:0 16px;

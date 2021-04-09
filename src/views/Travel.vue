@@ -97,17 +97,29 @@
 import bg from '../assets/list-bg.png'
 import instance from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+export interface IList {
+  commentsNum?: Number
+  date?: String
+  distance?: String
+  location?: String
+  name: String
+  personNum: Number
+  price: [Number,String]
+  rate: Number
+  roomNum: Number
+  unit: String
+}
 export default {
-  setup () {
-    const list = ref([])
+  setup() {
+    const list = ref<Array<IList>>([])
     const active = ref(1)
     const travelActive = ref(0)
     const { data, finished } = useAxios('/list', { method: 'GET' }, instance)
     const router = useRouter()
-    const toDetail = () => router.push({ name:'hotel-detail',params:{ id:1 }})
-    watch([finished,travelActive],() => {
+    const toDetail = () => router.push({ name: 'hotel-detail', params: { id: 1 } })
+    watch([finished, travelActive], () => {
       list.value = data.value
     })
     return {

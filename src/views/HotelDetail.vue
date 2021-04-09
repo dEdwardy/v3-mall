@@ -181,8 +181,11 @@
       </div>
       <!-- 地图定位 -->
       <div style="padding:0 16px">
-        <span style="color:red" @click="getMap">到这里去</span>
-      </div> 
+        <span
+          style="color:#13c2c2;font-size:14px"
+          @click="getMap"
+        >到这里去</span>
+      </div>
       <div class="bmap">
         <div
           id="container"
@@ -212,7 +215,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // import CustomBmap from '../components/custom-bmap'
 import { useTimeAgo } from '@vueuse/core'
 import CustomRate from '../components/custom-rate.vue'
@@ -220,22 +223,50 @@ import { ref, reactive, toRefs, watch, onMounted } from 'vue'
 import instance from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 import { useRouter } from 'vue-router'
-import { ImagePreview } from 'vant';
+import { ImagePreview } from 'vant'
 
+export interface IComment {
+  avatar: string
+  comment: string
+  date: string
+  name: string
+  rate: number
+}
+export interface IRate {
+  location: number 
+  price: number 
+  room: number 
+  service: number 
+  total: number
+}
+export interface IResult {
+  desc?: string
+  distance?: string
+  location?: string
+  name: string
+  poster?: string
+  price: number | string
+  pics: Array<any>
+  rate: IRate
+  comments: Array<IComment>
+}
+export interface IState {
+  item: IResult
+}
 /* eslint-disable no-undef */
 export default {
   components: {
     CustomRate
     // CustomBmap
   },
-  setup () {
-    const timeAgo = time => {
+  setup() {
+    const timeAgo = (time: any) => {
       let [year, month, day] = time.split('-')
       return useTimeAgo(new Date(year, month, day)).value
     }
     const more = ref(false)
-    const handleClickMore = () => more.value = true;
-    const state = reactive({
+    const handleClickMore = () => (more.value = true)
+    const state = reactive<IState>({
       item: {
         poster: '',
         name: '',
@@ -244,11 +275,11 @@ export default {
         price: '',
         desc: '',
         rate: {
-          total: '',
-          room: '',
-          service: '',
-          location: '',
-          price: ''
+          total: 0,
+          room: 0,
+          service: 0,
+          location:0,
+          price: 0
         },
         pics: [],
         comments: []
@@ -256,9 +287,9 @@ export default {
     })
     const router = useRouter()
     const like = ref(false)
-    const handleClickBack = () => router.back();
-    const handleClickLike = () => like.value = !like.value;
-    const handleClickImg = (idx) => {
+    const handleClickBack = () => router.back()
+    const handleClickLike = () => (like.value = !like.value)
+    const handleClickImg = (idx: number) => {
       ImagePreview({
         images: state.item.pics,
         startPosition: idx,
@@ -272,11 +303,15 @@ export default {
     })
     //换起h5 百度地图
     const getMap = () => {
-      window.location.href = 'http://api.map.baidu.com/marker?location=104.090148,30.59504&title=我的位置&content=银海芯座B栋&output=html&src=webapp.baidu.openAPIdemo'
+      window.location.href =
+        'http://api.map.baidu.com/marker?location=104.090148,30.59504&title=我的位置&content=银海芯座B栋&output=html&src=webapp.baidu.openAPIdemo'
     }
     onMounted(() => {
+      //@ts-ignore
       const map = new BMap.Map('container')
+      //@ts-ignore
       const point = new BMap.Point(116.404, 39.915)
+      //@ts-ignore
       map.addControl(new BMap.GeolocationControl())
       map.centerAndZoom(point, 15)
       map.enableScrollWheelZoom(true)
@@ -317,7 +352,7 @@ export default {
     color: red;
   }
   .details {
-    margin-top:50px;
+    margin-top: 50px;
     .base-info {
       padding: 12px 16px;
       .name {
@@ -415,7 +450,7 @@ export default {
     }
     .bmap {
       padding: 16px;
-      margin-bottom:16px;
+      margin-bottom: 16px;
     }
   }
 }

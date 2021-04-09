@@ -38,7 +38,10 @@
               name="like-o"
             />
           </div>
-          <div class="main" @click="() => handleViewDetail(item)">
+          <div
+            class="main"
+            @click="() => handleViewDetail(index)"
+          >
             <div
               class="middle"
               :style="{background:`url(${bg})`}"
@@ -73,17 +76,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import bg from '../assets/list-bg.png'
 import instance from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+export interface IResult {
+  name?: String
+  rate?: [Number, String]
+  commentsNum?: Number
+  date?: String
+  distance?: [String, Number]
+  location?: [String, Number]
+  unit?: String
+  price?: [String, Number]
+  personNum?: [String, Number]
+  roomNum?: [String, Number]
+}
 export default {
-  setup () {
-    const list = ref([])
+  setup() {
+    const list = ref<Array<IResult>>([])
     const { data, finished } = useAxios('/list', { method: 'GET' }, instance)
-    watch(finished, () => list.value = data.value)
+    watch(finished, () => (list.value = data.value))
     const value = ref('')
     const search = ref(null)
     const router = useRouter()
@@ -94,12 +109,12 @@ export default {
       console.log(value.value)
       alert(value.value)
     }
-    const handleViewDetail = (item) =>{
-      console.log(item)
+    const handleViewDetail = (id: number) => {
+      console.log(id)
       router.push({
-        name:'hotel-info',
-        params:{
-          id:1
+        name: 'hotel-info',
+        params: {
+          id: 1
         }
       })
     }
