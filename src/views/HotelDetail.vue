@@ -220,7 +220,7 @@
 import { useTimeAgo } from '@vueuse/core'
 import CustomRate from '../components/custom-rate.vue'
 import { ref, reactive, toRefs, watch, onMounted } from 'vue'
-import instance from '../utils/service'
+import { mockInstance as instance } from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 import { useRouter } from 'vue-router'
 import { ImagePreview } from 'vant'
@@ -233,10 +233,10 @@ export interface IComment {
   rate: number
 }
 export interface IRate {
-  location: number 
-  price: number 
-  room: number 
-  service: number 
+  location: number
+  price: number
+  room: number
+  service: number
   total: number
 }
 export interface IResult {
@@ -278,7 +278,7 @@ export default {
           total: 0,
           room: 0,
           service: 0,
-          location:0,
+          location: 0,
           price: 0
         },
         pics: [],
@@ -426,7 +426,8 @@ export default {
       }
       .pic {
         padding: 12px;
-        width: 25%;
+        width: 120px;
+        height: 120px;
         border-radius: 16px;
       }
     }

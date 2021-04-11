@@ -1,24 +1,27 @@
 <template>
   <div class="hotel-info">
-    <van-nav-bar
-      :title="info.name"
-      left-arrow
-      @click-left="onClickBack"
-      @click-right="handleClickLike"
-    >
-      <template #right>
-        <van-icon
-          v-show="!like"
-          class="like-icon"
-          name="like-o"
-        />
-        <van-icon
-          v-show="like"
-          class="like-icon"
-          name="like"
-        />
-      </template>
-    </van-nav-bar>
+    <van-sticky>
+      <van-nav-bar
+        :title="info.name"
+        fixed
+        left-arrow
+        @click-left="onClickBack"
+        @click-right="handleClickLike"
+      >
+        <template #right>
+          <van-icon
+            v-show="!like"
+            class="like-icon"
+            name="like-o"
+          />
+          <van-icon
+            v-show="like"
+            class="like-icon"
+            name="like"
+          />
+        </template>
+      </van-nav-bar>
+    </van-sticky>
     <div class="list">
       <div
         v-for="(item,index) of info.roomsInfo"
@@ -66,7 +69,7 @@
 import bg from '../assets/bg.png'
 import { watch, ref, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import instance from '../utils/service'
+import { mockInstance as instance } from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 export default {
   setup () {
@@ -74,7 +77,6 @@ export default {
     const handleClickLike = () => {
       like.value = !like.value
     }
-    const router = useRouter()
     const state = reactive({
       info: {
         poster: '',
@@ -92,6 +94,7 @@ export default {
       state.info = data.value
       console.log(data.value)
     })
+    const router = useRouter()
     const onClickBack = () => router.back()
     const handleViewDetail = item => {
       console.log(item)

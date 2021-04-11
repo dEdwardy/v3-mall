@@ -3,6 +3,20 @@
     <div class="content">
       <!-- 想去哪里 搜索 -->
       <div class="where-to-go">
+        <van-sticky>
+          <van-nav-bar
+            class="navbar"
+            @click-left="onClickBack"
+          >
+            <template #left>
+              <van-icon
+                name="down"
+                style="color:#13c2c2;transform:rotate(90deg)"
+                size="18"
+              />
+            </template>
+          </van-nav-bar>
+        </van-sticky>
         <!-- <div class="uinfo">
         
       </div> -->
@@ -61,6 +75,7 @@
                   round
                   block
                   type="success"
+                  style="background-color:--theme-color"
                   native-type="submit"
                   @click="toSearch"
                 >
@@ -85,10 +100,9 @@
       </div>
     </div>
     <!-- tabbar -->
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="active" route>
       <van-tabbar-item
-        fixed
-        to="/"
+        to="/home"
         icon="search"
       >
         发现
@@ -110,8 +124,10 @@
 </template>
 
 <script>
+import { useAxios } from '@vueuse/integrations'
 import { ref, reactive, defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+import { instance } from '../utils/service'
 export default defineComponent({
   name: 'Home',
   setup () {
@@ -124,9 +140,10 @@ export default defineComponent({
     const router = useRouter()
     const toSearch = () => {
       router.push({
-        path:'/search'
+        path: '/search'
       })
     }
+    const onClickBack = () => router.back()
     const onConfirm = (dates) => {
       console.log(dates)
       searchData.date = dates.map(date => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`).join(' - ')
@@ -142,6 +159,7 @@ export default defineComponent({
     const onSubmit = values => {
       console.log(values)
     }
+    useAxios('/users',instance)
     return {
       active,
       onSubmit,
@@ -149,7 +167,8 @@ export default defineComponent({
       showCalendar,
       onConfirm,
       show,
-      toSearch
+      toSearch,
+      onClickBack
     }
   }
 
@@ -158,9 +177,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .home {
-  .content{
+  .content {
     height: calc(100vh - 50px);
-    overflow-y:scroll;
+    overflow-y: scroll;
   }
   .part {
     padding: 16px;
@@ -171,7 +190,7 @@ export default defineComponent({
   }
   .where-to-go {
     position: relative;
-    height: 582px;
+    height: 628px;
     background-image: url('../assets/bg.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -223,6 +242,15 @@ export default defineComponent({
     box-shadow: 0px 2px 19px 0px rgba(0, 0, 0, 0.13);
     font-family: Arial;
     border: 1px solid rgba(255, 255, 255, 100);
+  }
+  ::v-deep(.van-nav-bar) {
+    background: rgba(0,0,0,.13);
+  }
+  ::v-deep(.van-nav-bar)::after {
+    transform: scale(0);
+  }
+  ::v-deep(.van-button){
+    background-color: --theme-color !important;
   }
 }
 </style>

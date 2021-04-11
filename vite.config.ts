@@ -5,6 +5,9 @@ const { resolve } = require('path')
 export default defineConfig({
   base:'/v3-mall/',
   plugins: [vue()],
+  server:{
+    port:80,
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

@@ -19,7 +19,7 @@ export default defineComponent({
   overflow-y: auto;
 }
 </style>
-<style lang="scss">
+<style>
 .van-cell {
   padding: 10px 8px;
 }

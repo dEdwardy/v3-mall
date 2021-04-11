@@ -1,30 +1,42 @@
 <template>
   <div class="search">
-    <van-nav-bar
-      title="搜索"
-      right-text="X"
-      @click-right="handleClose"
-    >
-      <template #right>
-        <van-icon
-          name="cross"
-          style="color:#aaa"
-          size="18"
+    <van-sticky>
+      <van-nav-bar
+        title="搜索"
+        right-text="X"
+        @click-right="handleClose"
+      >
+        <template #right>
+          <van-icon
+            name="cross"
+            style="color:#aaa"
+            size="18"
+          />
+        </template>
+      </van-nav-bar>
+      <van-search
+        ref="search"
+        v-model="value"
+        show-action
+        clearable
+        shape="round"
+        placeholder="你想去哪儿？"
+      >
+        <template #action>
+          <div @click="onSearch">搜索</div>
+        </template>
+      </van-search>
+      <van-dropdown-menu>
+        <van-dropdown-item
+          v-model="state.value1"
+          :options="option1"
         />
-      </template>
-    </van-nav-bar>
-    <van-search
-      ref="search"
-      v-model="value"
-      show-action
-      clearable
-      shape="round"
-      placeholder="你想去哪儿？"
-    >
-      <template #action>
-        <div @click="onSearch">搜索</div>
-      </template>
-    </van-search>
+        <van-dropdown-item
+          v-model="state.value2"
+          :options="option2"
+        />
+      </van-dropdown-menu>
+    </van-sticky>
     <div class="list">
       <div
         v-for="(item,index) of list"
@@ -78,9 +90,9 @@
 
 <script lang="ts">
 import bg from '../assets/list-bg.png'
-import instance from '../utils/service'
+import { mockInstance as instance } from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 export interface IResult {
   name?: String
@@ -96,6 +108,20 @@ export interface IResult {
 }
 export default {
   setup() {
+    const state = reactive({
+      value1: 0,
+      value2: 'a'
+    })
+    const option1 = [
+      { text: '全部商品', value: 0 },
+      { text: '新款商品', value: 1 },
+      { text: '活动商品', value: 2 }
+    ]
+    const option2 = [
+      { text: '默认排序', value: 'a' },
+      { text: '好评排序', value: 'b' },
+      { text: '销量排序', value: 'c' }
+    ]
     const list = ref<Array<IResult>>([])
     const { data, finished } = useAxios('/list', { method: 'GET' }, instance)
     watch(finished, () => (list.value = data.value))
@@ -126,7 +152,10 @@ export default {
       list,
       // getList,
       handleViewDetail,
-      bg
+      bg,
+      state,
+      option1,
+      option2
     }
   }
 }

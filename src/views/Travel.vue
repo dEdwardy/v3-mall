@@ -69,10 +69,9 @@
       </van-tabs>
     </div>
     <!-- tabbar -->
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="active" route>
       <van-tabbar-item
-        fixed
-        to="/"
+        to="/home"
         icon="search"
       >
         发现
@@ -95,7 +94,7 @@
 
 <script lang="ts">
 import bg from '../assets/list-bg.png'
-import instance from '../utils/service'
+import { mockInstance as instance } from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'

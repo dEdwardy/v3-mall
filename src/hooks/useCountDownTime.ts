@@ -27,8 +27,8 @@ export  function useCountDownTime (time: number): IResult {
   }, 1000);
   stop()
   const startCount = () => {
-    leftTime.value = time
     countDownLoading.value = true
+    leftTime.value = time
     start()
   }
   const stopCount = () => {

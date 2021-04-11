@@ -38,10 +38,9 @@
       </div>
     </div>
     <!-- tabbar -->
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="active" route>
       <van-tabbar-item
-        fixed
-        to="/"
+        to="/home"
         icon="search"
       >
         发现

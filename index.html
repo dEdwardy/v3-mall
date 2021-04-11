@@ -113,13 +113,13 @@
       }
       .frame-init {
         /* animation: leave 2000ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
-        animation: leaveByOpacity 600ms linear forwards;
+        animation: leaveByOpacity 800ms linear forwards;
       }
       @media screen and (max-width: 575px) {
         .frame-init {
-        /* animation: leave 2000ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
-        animation: leaveByX 600ms linear forwards;
-      }
+          /* animation: leave 2000ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
+          animation: leaveByX 800ms linear forwards;
+        }
       }
       @keyframes leaveByX {
         0%,
@@ -146,35 +146,59 @@
     </style>
   </head>
   <body>
-    <div class="loader">
-      <div class="loader-inner">
-        <div class="loader-line-wrap">
-          <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-          <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-          <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-          <div class="loader-line"></div>
-        </div>
-        <div class="loader-line-wrap">
-          <div class="loader-line"></div>
+    <div id="app">
+      <div class="loader">
+        <div class="loader-inner">
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
         </div>
       </div>
     </div>
-    <div id="app"></div>
     <script>
-      window.onload = () => {
-        document.querySelector('.loader').classList.add('frame-init')
+      let loader = document.querySelector('.loader')
+      const targetNode = document.querySelector('#app')
+      // 观察器的配置（需要观察什么变动）
+      const config = { childList: true }
+      // 当观察到变动时执行的回调函数
+      const callback = function (mutationsList, observer) {
+        // console.error(loader, 2)
+        for (let item of mutationsList) {
+          //移除了了一个 div.loader 和2 个换行符
+          if (item.removedNodes.length === 3) {
+            loader.classList.add('frame-init')
+            targetNode.insertAdjacentElement('beforebegin', loader)
+            observer.disconnect()
+          }
+        }
       }
+
+      // 创建一个观察器实例并传入回调函数
+      const observer = new MutationObserver(callback)
+
+      // 以上述配置开始观察目标节点
+      observer.observe(targetNode, config)
+
+      // 之后，可停止观察
+      // observer.disconnect()
     </script>
     <script
       type="text/javascript"
       src="https://api.map.baidu.com/api?v=3.0&ak=GPQKsVOKvS5Inm0PBdBPDMLKR9noGqjk"
     ></script>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
