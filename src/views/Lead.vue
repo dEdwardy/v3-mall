@@ -10,18 +10,32 @@
       </div>
     </div>
     <div class="bottom">
-      <van-button round block style="background:#13c2c2;color:#fff" @click="go">开始</van-button>
+      <van-button
+        round
+        block
+        style="background:#13c2c2;color:#fff"
+        @click="() =>go()"
+      >
+        开始
+      </van-button>
       <!-- <p class="info">已有帐号了？<span>登录</span></p> -->
     </div>
   </div>
 </template>
 
 <script>
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 export default {
-  setup(){
+  setup () {
     const router = useRouter()
-    const go = () => router.push({ name:'login' })
+    onMounted(() => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        go('home')
+      }
+    });
+    const go = (name = 'login') => router.push({ name })
     return {
       go
     }
@@ -38,47 +52,47 @@ export default {
   background-repeat: no-repeat;
   .top {
     position: absolute;
-    top:100px;
-    left:50%;
-    transform:translateX(-50%);
-    width:240px;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
     .logo {
-      margin:0 auto;
-      width:109px;
-      height:97px;
+      margin: 0 auto;
+      width: 109px;
+      height: 97px;
       background-image: url('../assets/logo.png');
       background-size: 100%;
       background-repeat: no-repeat;
     }
-    .title{
-      color:#404040;
+    .title {
+      color: #404040;
       text-align: center;
       font-size: 36px;
       height: 50px;
       line-height: 50px;
       font-weight: bold;
     }
-    .desc{
-      color:#404040;
+    .desc {
+      color: #404040;
       text-align: center;
       line-height: 20px;
       font-size: 14px;
       font-weight: bold;
     }
   }
-  .bottom{
+  .bottom {
     position: absolute;
-    bottom:20px;
-    left:0;
-    right:0;
-    padding:0 16px;
-    .info{
-      color:#aaa;
-      margin:16px 0;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 16px;
+    .info {
+      color: #aaa;
+      margin: 16px 0;
       text-align: center;
       font-size: 14px;
-      span{
-        color:#13c2c2;
+      span {
+        color: #13c2c2;
       }
     }
   }

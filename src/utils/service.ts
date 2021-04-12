@@ -1,14 +1,16 @@
-import { useLocalStorage } from '@vueuse/core'
 import axios from 'axios'
 import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
 // import store from '../store'
 
 const mockInstance = axios.create({
-  baseURL: 'http://rap2api.taobao.org/app/mock/280895/'
+  baseURL: 'http://rap2api.taobao.org/app/mock/280895/',
+  timeout: 5000
 })
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: import.meta.env.DEV ? 'http://localhost:3000' : '/api-upload',
+  // baseURL: 'http://localhost:3000',
+  timeout: 5000
 })
 const whiteList = ['app-login', 'send-code']
 // const requestNum = 0;
@@ -46,19 +48,19 @@ mockInstance.interceptors.response.use(
 )
 
 instance.interceptors.request.use(
-  (config) => {
+  (config: any) => {
     console.warn(config)
     const { headers, url } = config
-    if (whiteList.some((i) => url?.includes(i))) {
+    if (whiteList.some((i) => url.includes(i))) {
       return config
     } else {
-      const token = useLocalStorage('token')
-      if (!token.value) {
-          const router = useRouter()
-          Toast.fail('请登录后在操作')
-          router.replace('/login')
+      const token = localStorage.getItem('token')
+      if (!token) {
+        const router = useRouter()
+        Toast.fail('请登录后在操作')
+        router.replace('/login')
       } else {
-        headers.token = `Bear ${token.value}`
+        headers.token = `Bear ${token}`
         return config
       }
       // if(!headers.token){
@@ -79,10 +81,17 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
+    console.error(import.meta.env.DEV)
+    console.error(import.meta.env.PROD)
     const { data } = res.data
+    console.error(data)
     if (data.status == 200) {
       return data
     } else {
+      if (data.data.message) {
+        Toast.fail(data.data.message)
+        return Promise.reject(data.data.message)
+      }
       Toast.fail(data.message.message)
       return Promise.reject(data.message.message)
     }

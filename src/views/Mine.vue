@@ -32,7 +32,7 @@
         <div>支付</div>
         <div><van-icon size="20px" name="alipay" /></div>
       </div>
-      <div class="action">
+      <div class="action" @click="handleSettings">
         <div>设置</div>
         <div><van-icon size="20px" name="setting" /></div>
       </div>
@@ -66,8 +66,13 @@ import { ref } from 'vue';
 export default {
   setup(){
     const active = ref(2)
+    const handleSettings = () => {
+      if(localStorage.getItem('token'))localStorage.removeItem('token')
+      if(localStorage.getItem('uinfo'))localStorage.removeItem('uinfo')
+    }
     return {
-      active
+      active,
+      handleSettings
     }
   }
 }

@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import { useLocalStorage, useWindowSize } from '@vueuse/core'
+import { ref, watch, onMounted } from 'vue'
+import { useWindowSize } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { useCountDownTime } from '../hooks/useCountDownTime'
 import { Notify } from 'vant';
@@ -124,19 +124,20 @@ export default {
       form.value.validate('phone').then(() => {
         loading.value = true
         console.log(values)
-        let { finished, data,error } = useAxios('/auth/app-login', {
+        let { finished, data, error } = useAxios('/auth/app-login', {
           method: 'POST',
           data: {
             email: phone.value,
             code: code.value
           }
         }, instance)
-        watch(finished,() => {
+        watch(finished, () => {
           console.warn('000000000000')
           if (!error.value && finished.value) {
             Toast.success('登陆成功')
-            console.error(data.value.token)
-            useLocalStorage('token',data.value.token)
+            const { token, ...uinfo } = data.value
+            localStorage.setItem('token', token)
+            localStorage.setItem('uinfo', JSON.stringify(uinfo))
             loading.value = false
             router.push({ name: 'home' })
           } else {
@@ -154,9 +155,9 @@ export default {
             email: phone.value
           }
         }, instance)
-        watch(finished,() => {
+        watch(finished, () => {
           if (!error.value && finished.value) {
-            countDownLoading.value  =true
+            countDownLoading.value = true
             startCount()
           }
         })
@@ -165,6 +166,12 @@ export default {
       })
 
     }
+    onMounted(() => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        router.push({ name: 'home' })
+      }
+    })
     /**
      * fix 移动端输入框 唤起键盘顶起底部 登录按钮
      */

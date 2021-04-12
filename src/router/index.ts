@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import '../common/nprogress.css'
 import { Toast } from 'vant'
 import { useNProgress } from '@vueuse/integrations'
-import { useLocalStorage } from '@vueuse/core'
 const { progress } = useNProgress()
 const routes: Array<RouteRecordRaw> = [
   {
@@ -70,8 +69,8 @@ router.beforeEach((to, from, next) => {
     start()
     next()
   } else {
-    const token = useLocalStorage('token')
-    if (!token.value) {
+    const token = localStorage.getItem('token')
+    if (!token) {
       console.error('home')
       Toast.fail('请登录后在操作')
       next({ path: '/login' })

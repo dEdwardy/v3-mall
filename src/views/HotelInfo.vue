@@ -126,6 +126,7 @@ export default {
   .list {
     // height:calc(100vh - 100px);
     overflow-y: scroll;
+    margin-top:46px;
     padding: 0 16px;
     .item {
       margin: 16px 0;
