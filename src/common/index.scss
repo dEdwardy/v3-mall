@@ -20,6 +20,9 @@
   &.align-end {
     align-items: flex-end;
   }
+   &.align-center {
+    align-items: center;
+  }
 
   &.justify-end {
     justify-content: flex-end;
