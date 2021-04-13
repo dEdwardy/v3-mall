@@ -34,7 +34,7 @@
         >
           <div
             class="middle"
-            :style="{background:`url(${bg})`}"
+            :style="{background:`url(${item.img ? item.img: bg})`}"
           ></div>
           <div class="info bottom">
             <div class="name">
@@ -42,9 +42,20 @@
               <span style="margin:0 4px;color:#aaa;font-size:14px">/</span>
               <span style="color:#aaa;font-size:14px">{{ item.liveNum }}人</span>
             </div>
+            <div class="tags" style="padding:6px 0">
+              <van-tag
+                v-for="(text,idx) of item.tags"
+                :key="idx"
+                style="margin:0 2px;"
+                plain
+                type="primary"
+              >
+                {{ text }}
+              </van-tag>
+            </div>
             <div class="flex justify-between">
               <div class="price">
-                <span>{{ item.price }}</span>
+                <span>￥{{ item.price }}</span>
                 <span style="margin:0 4px;color:#aaa;font-size:14px">/</span>
                 <span style="color:#aaa;font-size:14px">每晚</span>
               </div>
@@ -68,8 +79,8 @@
 <script>
 import bg from '../assets/bg.png'
 import { watch, ref, reactive, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
-import { mockInstance as instance } from '../utils/service'
+import { useRoute, useRouter } from 'vue-router'
+import { instance } from '../utils/service'
 import { useAxios } from '@vueuse/integrations'
 export default {
   setup () {
@@ -89,10 +100,21 @@ export default {
         }
       }
     });
-    const { data, finished } = useAxios('/info', { method: 'GET' }, instance)
+    const { params } = useRoute()
+    console.log(params)
+    const { data, finished } = useAxios('/room', { method: 'GET', params: { hotelId: params.id } }, instance)
     watch(finished, () => {
-      state.info = data.value
-      console.log(data.value)
+      state.info = {
+        post: '222',
+        name: '123123',
+        roomsInfo: data.value.map(i => ({
+          ...i,
+          numLeft: 1,
+          liveNum: 2,
+          tags: i?.tags?.split(',') ??[]
+        }))
+      }
+      console.error(data.value)
     })
     const router = useRouter()
     const onClickBack = () => router.back()
@@ -126,7 +148,7 @@ export default {
   .list {
     // height:calc(100vh - 100px);
     overflow-y: scroll;
-    margin-top:46px;
+    margin-top: 46px;
     padding: 0 16px;
     .item {
       margin: 16px 0;
@@ -157,6 +179,11 @@ export default {
         padding: 12px 12px 16px 12px;
       }
     }
+  }
+  ::v-deep(.van-tag){
+    color: #635e54;
+    padding:1px 5px;;
+    border-color: #dcdcdc;
   }
 }
 </style>

@@ -67,7 +67,7 @@
               </div>
               <div
                 class="main"
-                @click="() => handleViewDetail(index)"
+                @click="() => handleViewDetail(item.id)"
               >
                 <div
                   class="middle"
@@ -226,7 +226,7 @@ export default {
       router.push({
         name: 'hotel-info',
         params: {
-          id: 1
+          id
         }
       })
     }
