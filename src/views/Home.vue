@@ -134,7 +134,6 @@ export default defineComponent({
     const active = ref(0)
     const showCalendar = ref(false)
     const show = () => {
-      console.log('click')
       showCalendar.value = true
     }
     const router = useRouter()
@@ -145,7 +144,6 @@ export default defineComponent({
     }
     const onClickBack = () => router.back()
     const onConfirm = (dates) => {
-      console.log(dates)
       searchData.date = dates.map(date => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`).join(' - ')
       showCalendar.value = false;
     }

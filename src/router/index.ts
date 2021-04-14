@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token')
     if (!token) {
       console.error('home')
-      Toast.fail('请登录后在操作')
+      Toast.fail('请登录后再操作')
       next({ path: '/login' })
     } else {
       console.error('continus')

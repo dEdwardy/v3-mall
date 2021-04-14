@@ -2454,6 +2454,11 @@ vue-tsc@^0.0.15:
   dependencies:
     unzipper "0.10.11"
 
+vue3-lazyload@^0.2.2-beta:
+  version "0.2.2-beta"
+  resolved "https://registry.npm.taobao.org/vue3-lazyload/download/vue3-lazyload-0.2.2-beta.tgz#c75df1a8553b60fbfd8324d083cb0e71c94dd26d"
+  integrity sha1-x13xqFU7YPv9gyTQg8sOcclN0m0=
+
 vue@^3.0.5:
   version "3.0.10"
   resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.10.tgz?cache=0&sync_timestamp=1617149219940&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-3.0.10.tgz#b5d2801c6ac0e756c850ad7a8f9a78cbccbad02a"

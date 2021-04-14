@@ -119,11 +119,10 @@ export default {
     const loading = ref(false)
     const router = useRouter()
     const form = ref(null)
-    const onSubmit = values => {
-      // console.log(form.value.)
+    const onSubmit = () => {
       form.value.validate('phone').then(() => {
         loading.value = true
-        console.log(values)
+        // console.log(values)
         let { finished, data, error } = useAxios('/auth/app-login', {
           method: 'POST',
           data: {
@@ -132,7 +131,6 @@ export default {
           }
         }, instance)
         watch(finished, () => {
-          console.warn('000000000000')
           if (!error.value && finished.value) {
             Toast.success('登陆成功')
             const { token, ...uinfo } = data.value

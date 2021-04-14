@@ -69,10 +69,15 @@
                 class="main"
                 @click="() => handleViewDetail(item.id)"
               >
-                <div
+                <!-- <div
                   class="middle"
                   :style="{background:`url(${item.img ? item.img: bg})`}"
-                ></div>
+                ></div> -->
+                <img
+                  v-lazy="{ src:item.img ? item.img :bg }"
+                  class="middle"
+                  lazy="error"
+                />
                 <div class="info bottom">
                   <div class="flex justify-between">
                     <div class="name"> {{ item.name }}</div>
@@ -184,11 +189,7 @@ export default {
       // state.loading = true
       state.finished = false
       state.loading = false
-      state.options.curPage = 1;
-      console.warn({
-            ...state.options,
-            pageNum:1
-          })
+      state.options.curPage = 1
       const { data, finished } = useAxios(
         '/hotel',
         {
@@ -216,13 +217,12 @@ export default {
         list.value = res
         if (state.options.curPage * state.options.pageNum >= Number(state.options.total)) {
           state.finished = true
-          console.error('没有更多了')
+          console.log('没有更多了')
           return
         }
       })
     }
     const handleViewDetail = (id: number) => {
-      console.log(id)
       router.push({
         name: 'hotel-info',
         params: {
@@ -231,11 +231,7 @@ export default {
       })
     }
     const onLoad = async (init = false, refresh = false) => {
-      console.error('-----------------')
-      console.error(state.options.curPage, state.options.pageNum, state.options.total)
       state.loading = true
-      console.error('##########################')
-      console.error(state.options.curPage * state.options.pageNum >= Number(state.options.total))
       if (init) state.options.curPage = 1
       if (
         state.options.total !== undefined &&
@@ -255,8 +251,7 @@ export default {
         },
         instance
       )
-      watch(finished, (v) => {
-        console.warn(v)
+      watch(finished, () => {
         state.options.curPage = Number(data.value.curPage)
         state.options.pageNum = data.value.pageNum
         state.options.total = data.value.total
@@ -282,7 +277,6 @@ export default {
           state.finished = false
         }
         state.options.curPage++
-        console.log(data.value)
       })
     }
     const onRefresh = async () => {
@@ -354,6 +348,7 @@ export default {
         box-shadow: 0px 2px 19px 0px rgba(0, 0, 0, 0.13);
       }
       .middle {
+        width: 100%;
         border-radius: 12px 12px 0 0 !important;
         height: 172px;
       }

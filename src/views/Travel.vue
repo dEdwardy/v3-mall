@@ -60,10 +60,104 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="已完成">1</van-tab>
+        <van-tab title="已完成">
+          <div class="list">
+            <div
+              v-for="(item,index) of list"
+              :key="index"
+              class="item"
+              @click="toDetail"
+            >
+              <div class="like-icon">
+                <van-icon
+                  class=""
+                  name="like-o"
+                />
+              </div>
+              <div class="top txt-center">
+                {{ item.date }} , {{ item.roomNum+' 间' }} - {{ item.personNum +' 人' }}
+              </div>
+              <div class="main">
+                <div
+                  class="middle"
+                  :style="{background:`url(${bg})`}"
+                ></div>
+                <div class="info bottom">
+                  <div class="flex">
+                    <div class="name"> {{ item.name }}</div>
+                    <div class="price"> {{ item.unit +' '+ item.price }}</div>
+                  </div>
+                  <div class="flex">
+                    <div class="location">
+                      <van-icon name="location-o" />{{ item.location }}
+                    </div>
+                    <div class="distance"> {{ item.distance }}</div>
+                  </div>
+                  <div
+                    class="flex"
+                    style="justify-content:flex-start"
+                  >
+                    <van-rate
+                      v-model="item.rate"
+                      :count="5"
+                      readonly
+                    />
+                    <div style="margin-left:20px;color:#aaa;font-size:14px">{{ item.commentsNum }} 条评论</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </van-tab>
         <van-tab title="喜欢">
           <div class="list">
-            222
+            <div class="list">
+              <div
+                v-for="(item,index) of list"
+                :key="index"
+                class="item"
+                @click="toDetail"
+              >
+                <div class="like-icon">
+                  <van-icon
+                    class=""
+                    name="like-o"
+                  />
+                </div>
+                <div class="top txt-center">
+                  {{ item.date }} , {{ item.roomNum+' 间' }} - {{ item.personNum +' 人' }}
+                </div>
+                <div class="main">
+                  <div
+                    class="middle"
+                    :style="{background:`url(${bg})`}"
+                  ></div>
+                  <div class="info bottom">
+                    <div class="flex">
+                      <div class="name"> {{ item.name }}</div>
+                      <div class="price"> {{ item.unit +' '+ item.price }}</div>
+                    </div>
+                    <div class="flex">
+                      <div class="location">
+                        <van-icon name="location-o" />{{ item.location }}
+                      </div>
+                      <div class="distance"> {{ item.distance }}</div>
+                    </div>
+                    <div
+                      class="flex"
+                      style="justify-content:flex-start"
+                    >
+                      <van-rate
+                        v-model="item.rate"
+                        :count="5"
+                        readonly
+                      />
+                      <div style="margin-left:20px;color:#aaa;font-size:14px">{{ item.commentsNum }} 条评论</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </van-tab>
       </van-tabs>

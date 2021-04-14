@@ -139,7 +139,7 @@
             :key="index"
             class="comment"
           >
-            <div class="flex align-center">
+            <div class="flex">
               <div class="avatar">
                 <img :src="item.avatar" />
               </div>
