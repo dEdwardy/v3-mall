@@ -168,6 +168,11 @@
       </div>
     </div>
     <script>
+      window.addEventListener('message', function (e) {
+        document.querySelector('.loader').style.display = 'none'
+      })
+    </script>
+    <!-- <script>
       let loader = document.querySelector('.loader')
       const targetNode = document.querySelector('#app')
       // 观察器的配置（需要观察什么变动）
@@ -193,7 +198,7 @@
 
       // 之后，可停止观察
       // observer.disconnect()
-    </script>
+    </script> -->
     <script
       type="text/javascript"
       src="https://api.map.baidu.com/api?v=3.0&ak=GPQKsVOKvS5Inm0PBdBPDMLKR9noGqjk"
