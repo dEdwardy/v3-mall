@@ -2,13 +2,13 @@ import axios from 'axios'
 import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
 // import store from '../store'
-
+console.error(import.meta.env)
 const mockInstance = axios.create({
   baseURL: 'http://rap2api.taobao.org/app/mock/280895/',
   timeout: 5000
 })
 const instance = axios.create({
-  baseURL: import.meta.env.DEV ? 'http://localhost:3000' : '/api-upload',
+  baseURL: import.meta.env.DEV ? import.meta.env.VITE_DEV_BASE_URL : import.meta.env.VITE_PROD_BASE_URL,
   // baseURL: 'http://localhost:3000',
   timeout: 5000
 })
@@ -60,7 +60,8 @@ instance.interceptors.request.use(
         Toast.fail('请登录后再操作')
         router.replace('/login')
       } else {
-        headers.token = `Bear ${token}`
+        headers.Authorization = token
+        // headers.token = token
         return config
       }
       // if(!headers.token){
@@ -81,22 +82,27 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
-    console.error(import.meta.env.DEV)
-    console.error(import.meta.env.PROD)
     const { data } = res.data
-    console.error(data)
-    if (data.status == 200) {
+    const status = data?.status
+    if (status == 200) {
       return data
-    } else {
-      if (data.data.message) {
-        Toast.fail(data.data.message)
-        return Promise.reject(data.data.message)
-      }
-      Toast.fail(data.message.message)
-      return Promise.reject(data.message.message)
+    } else if( status == 429){
+      Toast.fail('请勿频繁操作')
+      return Promise.reject('请勿频繁操作')
+    }else {
+      if (data.message) {
+        console.error(data.message?.message ?? data.message?.error)
+        Toast.fail(data.message?.message ?? data.message?.error)
+        return Promise.reject(data.message?.message ?? data.message?.error)
+      } 
+      // else if (data) {
+      //   console.error(data)
+      //   return Promise.reject('网络出错啦')
+      // }
     }
   },
   (err) => {
+    console.error(err)
     return Promise.reject(err)
   }
 )

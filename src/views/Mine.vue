@@ -32,9 +32,13 @@
         <div>支付</div>
         <div><van-icon size="20px" name="alipay" /></div>
       </div>
-      <div class="action" @click="handleSettings">
+      <div class="action">
         <div>设置</div>
         <div><van-icon size="20px" name="setting" /></div>
+      </div>
+      <div class="action" @click="handleSettings">
+        <div>退出</div>
+        <div><van-icon size="20px" name="revoke" /></div>
       </div>
     </div>
     <!-- tabbar -->
@@ -63,12 +67,17 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { Toast } from 'vant';
 export default {
   setup(){
     const active = ref(2)
+    const router = useRouter()
     const handleSettings = () => {
       if(localStorage.getItem('token'))localStorage.removeItem('token')
       if(localStorage.getItem('uinfo'))localStorage.removeItem('uinfo')
+      Toast.success('已退出当前账户')
+      router.replace('/login')
     }
     return {
       active,

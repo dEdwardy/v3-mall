@@ -1,31 +1,33 @@
 <template>
   <div class="search">
+    <van-nav-bar
+      title="搜索"
+      left-arrow
+      right-text="X"
+      @click-left="handleClose"
+      @click-right="handleClose"
+    >
+      <template #right>
+        <van-icon
+          name="cross"
+          style="color:#aaa"
+          size="18"
+        />
+      </template>
+    </van-nav-bar>
+    <van-search
+      ref="search"
+      v-model="state.options.keywords"
+      show-action
+      clearable
+      shape="round"
+      placeholder="你想去哪儿？"
+    >
+      <template #action>
+        <div @click="onSearch">搜索</div>
+      </template>
+    </van-search>
     <van-sticky>
-      <van-nav-bar
-        title="搜索"
-        right-text="X"
-        @click-right="handleClose"
-      >
-        <template #right>
-          <van-icon
-            name="cross"
-            style="color:#aaa"
-            size="18"
-          />
-        </template>
-      </van-nav-bar>
-      <van-search
-        ref="search"
-        v-model="state.options.keywords"
-        show-action
-        clearable
-        shape="round"
-        placeholder="你想去哪儿？"
-      >
-        <template #action>
-          <div @click="onSearch">搜索</div>
-        </template>
-      </van-search>
       <van-dropdown-menu>
         <van-dropdown-item
           v-model="state.value1"
@@ -53,63 +55,70 @@
             v-if="list.length == 0 && state.options.keywords"
             description="暂无数据"
           />
-          <div
-            v-for="(item,index) of list"
-            :key="index"
-            class="item"
-          >
-            <div>
-              <div class="like-icon">
-                <van-icon
-                  class=""
-                  name="like-o"
-                />
-              </div>
-              <div
-                class="main"
-                @click="() => handleViewDetail(item.id)"
-              >
-                <!-- <div
+          <lazy-component>
+            <div
+              v-for="(item,index) of list"
+              :key="index"
+              class="item"
+            >
+              <div>
+                <div class="like-icon">
+                  <van-icon
+                    class=""
+                    name="like-o"
+                  />
+                </div>
+                <div
+                  class="main"
+                  @click="() => handleViewDetail(item.id)"
+                >
+                  <!-- <div
                   class="middle"
                   :style="{background:`url(${item.img ? item.img: bg})`}"
                 ></div> -->
-                <img
+                  <!-- <img
                   v-lazy="{ src:item.img ? item.img :bg }"
                   class="middle"
                   lazy="error"
-                />
-                <div class="info bottom">
-                  <div class="flex justify-between">
-                    <div class="name"> {{ item.name }}</div>
-                    <div class="price"> {{ item.unit +' '+ item.price }}</div>
-                  </div>
-                  <div class="flex">
-                    <div class="location">
-                      <van-icon name="location-o" />{{ item.location }} {{ item.distance }}
+                /> -->
+                  <img
+                    v-lazy="item.img ? item.img :bg "
+                    class="middle"
+                    lazy="error"
+                  />
+                  <div class="info bottom">
+                    <div class="flex justify-between">
+                      <div class="name"> {{ item.name }}</div>
+                      <div class="price"> {{ item.unit +' '+ item.price }}</div>
                     </div>
-                    <!-- <div class="distance"> {{ item.distance }}</div> -->
-                  </div>
-                  <div
-                    class="flex"
-                    style="justify-content:flex-start"
-                  >
-                    <van-rate
-                      v-model="item.rate"
-                      allow-half
-                      :count="5"
-                      readonly
-                    />
+                    <div class="flex">
+                      <div class="location">
+                        <van-icon name="location-o" />{{ item.location }} {{ item.distance }}
+                      </div>
+                      <!-- <div class="distance"> {{ item.distance }}</div> -->
+                    </div>
                     <div
-                      class="flex flex-end align-center"
-                      style="flex:1;margin-left:20px;color:#aaa;font-size:14px"
+                      class="flex"
+                      style="justify-content:flex-start"
                     >
-                      {{ item.commentsNum }} 条评论
+                      <van-rate
+                        v-model="item.rate"
+                        allow-half
+                        :count="5"
+                        readonly
+                      />
+                      <div
+                        class="flex flex-end align-center"
+                        style="flex:1;margin-left:20px;color:#aaa;font-size:14px"
+                      >
+                        {{ item.commentsNum }} 条评论
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </lazy-component>
         </van-list>
       </van-pull-refresh>
     </div>
@@ -241,7 +250,7 @@ export default {
         console.error('没有更多了')
         return
       }
-      const { data, finished } = useAxios(
+      const { data, finished, error } = useAxios(
         '/hotel',
         {
           method: 'GET',
@@ -252,6 +261,11 @@ export default {
         instance
       )
       watch(finished, () => {
+        if (error.value) {
+          list.value = []
+          state.finished = true
+          return
+        }
         state.options.curPage = Number(data.value.curPage)
         state.options.pageNum = data.value.pageNum
         state.options.total = data.value.total
@@ -270,7 +284,6 @@ export default {
         } else {
           list.value = [...res, ...list.value]
         }
-        // if (init) state.finished = true
         state.loading = false
         if (refresh) {
           state.refreshing = false
@@ -320,8 +333,8 @@ export default {
     box-shadow: 0px 2px 19px 0px rgba(0, 0, 0, 0.13);
   }
   .list {
-    height: calc(100vh - 148px);
-    overflow-y: scroll;
+    // height: calc(100vh - 148px);
+    // overflow-y: scroll;  
     padding: 0 16px;
     .item {
       position: relative;

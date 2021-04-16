@@ -134,12 +134,18 @@ export default {
           if (!error.value && finished.value) {
             Toast.success('登陆成功')
             const { token, ...uinfo } = data.value
-            localStorage.setItem('token', token)
+            localStorage.setItem('token', `Bearer ${token}`)
             localStorage.setItem('uinfo', JSON.stringify(uinfo))
             loading.value = false
             router.push({ name: 'home' })
           } else {
-            loading.value = false
+            if (error.value) {
+              loading.value = false
+            } else {
+              Toast.fail('验证码错误')
+              loading.value = false
+            }
+
           }
         })
       })

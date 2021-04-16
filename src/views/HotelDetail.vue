@@ -119,64 +119,68 @@
       <!-- 照片 -->
       <div class="pics">
         <div class="title">照片</div>
-        <div class="wrapper flex align-center">
+        <!-- <div class="wrapper flex align-center">
+        </div> -->
+        <lazy-compoent class="wrapper flex align-center">
           <img
             v-for="(item,index) of item.pics"
             :key="index"
+            v-lazy="item"
             class="pic"
-            :src="item"
             alt=""
             @click.stop="() => handleClickImg(index)"
           >
-        </div>
+        </lazy-compoent>
       </div>
       <!-- 评论 -->
       <div class="comments">
         <div class="title">评论({{ item.comments.length }})</div>
         <div class="wrapper">
-          <div
-            v-for="(item,index) of item.comments"
-            :key="index"
-            class="comment"
-          >
-            <div class="flex">
-              <div class="avatar">
-                <img :src="item.avatar" />
-              </div>
-              <div
-                class="flex flex-column justify-around"
-                style="margin-left:16px;flex:1"
-              >
-                <div class="flex">
-                  <div style="font-size:16px;width:200px">{{ item.name }}</div>
-                  <div style="text-align:right;flex:1">{{ item.rate }}</div>
+          <lazy-component>
+            <div
+              v-for="(item,index) of item.comments"
+              :key="index"
+              class="comment"
+            >
+              <div class="flex">
+                <div class="avatar">
+                  <img v-lazy="item.avatar" />
                 </div>
-                <div class="flex">
-                  <div
-                    v-if="item.date"
-                    style="color:#aaa"
-                  >
-                    {{ timeAgo(item.date) }}
+                <div
+                  class="flex flex-column justify-around"
+                  style="margin-left:16px;flex:1"
+                >
+                  <div class="flex">
+                    <div style="font-size:16px;width:200px">{{ item.name }}</div>
+                    <div style="text-align:right;flex:1">{{ item.rate }}</div>
                   </div>
-                  <van-rate
-                    v-model="item.rate"
-                    class="flex justify-end"
-                    style="flex:1"
-                    color="#ffd21e"
-                    void-icon="star"
-                    void-color="#eee"
-                    :size="8"
-                    :count="10"
-                    allow-half
-                    readonly
-                  />
+                  <div class="flex">
+                    <div
+                      v-if="item.date"
+                      style="color:#aaa"
+                    >
+                      {{ timeAgo(item.date) }}
+                    </div>
+                    <van-rate
+                      v-model="item.rate"
+                      class="flex justify-end"
+                      style="flex:1"
+                      color="#ffd21e"
+                      void-icon="star"
+                      void-color="#eee"
+                      :size="8"
+                      :count="10"
+                      allow-half
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
+              <div class="txt">
+                {{ item.comment }}
+              </div>
             </div>
-            <div class="txt">
-              {{ item.comment }}
-            </div>
-          </div>
+          </lazy-component>
         </div>
       </div>
       <!-- 地图定位 -->

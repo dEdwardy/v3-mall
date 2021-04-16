@@ -100,7 +100,10 @@
       </div>
     </div>
     <!-- tabbar -->
-    <van-tabbar v-model="active" route>
+    <van-tabbar
+      v-model="active"
+      route
+    >
       <van-tabbar-item
         to="/home"
         icon="search"
@@ -124,10 +127,10 @@
 </template>
 
 <script>
-import { useAxios } from '@vueuse/integrations'
+// import { useAxios } from '@vueuse/integrations'
 import { ref, reactive, defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { instance } from '../utils/service'
+// import { instance } from '../utils/service'
 export default defineComponent({
   name: 'Home',
   setup () {
@@ -157,7 +160,6 @@ export default defineComponent({
     const onSubmit = values => {
       console.log(values)
     }
-    useAxios('/users',instance)
     return {
       active,
       onSubmit,
@@ -242,12 +244,12 @@ export default defineComponent({
     border: 1px solid rgba(255, 255, 255, 100);
   }
   ::v-deep(.van-nav-bar) {
-    background: rgba(0,0,0,.13);
+    background: rgba(0, 0, 0, 0.13);
   }
   ::v-deep(.van-nav-bar)::after {
     transform: scale(0);
   }
-  ::v-deep(.van-button){
+  ::v-deep(.van-button) {
     background-color: --theme-color !important;
   }
 }
